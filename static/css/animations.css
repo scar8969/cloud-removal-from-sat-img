@@ -1,0 +1,261 @@
+/* animations.css - Animations for Cloud Removal Showcase */
+
+/* Hero clouds animation */
+.hero-clouds::before,
+.hero-clouds::after {
+    content: "☁️";
+    position: absolute;
+    font-size: 4rem;
+    animation: floatCloud 20s linear infinite;
+    opacity: 0.3;
+}
+
+.hero-clouds::before {
+    top: 20%;
+    left: -10%;
+    animation-duration: 25s;
+}
+
+.hero-clouds::after {
+    top: 60%;
+    left: -10%;
+    animation-duration: 30s;
+    animation-delay: -10s;
+}
+
+@keyframes floatCloud {
+    0% {
+        transform: translateX(-100px);
+    }
+    100% {
+        transform: translateX(calc(100vw + 100px));
+    }
+}
+
+/* Scroll reveal animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade in */
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide in from left */
+.slide-left {
+    animation: slideLeft 0.6s ease forwards;
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide in from right */
+.slide-right {
+    animation: slideRight 0.6s ease forwards;
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scale in */
+.scale-in {
+    animation: scaleIn 0.5s ease forwards;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Spinner animation */
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Button pulse on hover */
+.btn-pulse:hover {
+    animation: btnPulse 0.5s ease;
+}
+
+@keyframes btnPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Metric bar fill animation */
+.metric-fill {
+    transition: width 0.8s ease;
+}
+
+/* Upload zone hover animation */
+.upload-zone {
+    transition: all 0.3s ease;
+}
+
+.upload-zone:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 180, 216, 0.1);
+}
+
+/* Card hover lift */
+.feature-card,
+.gallery-card,
+.about-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover,
+.gallery-card:hover,
+.about-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar scroll effect */
+.navbar.scrolled {
+    background: rgba(10, 10, 26, 0.95);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading dots animation */
+.loading-dots::after {
+    content: "";
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0% { content: ""; }
+    25% { content: "."; }
+    50% { content: ".."; }
+    75% { content: "..."; }
+}
+
+/* Gradient text animation */
+.gradient-text {
+    background-size: 200% auto;
+    animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+/* Result appear animation */
+.results-panel {
+    animation: resultAppear 0.5s ease forwards;
+}
+
+@keyframes resultAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Comparison slider handle pulse */
+.comparison-handle {
+    animation: handlePulse 2s ease infinite;
+}
+
+@keyframes handlePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 180, 216, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 180, 216, 0);
+    }
+}
+
+/* Arch block tooltip */
+.arch-block {
+    position: relative;
+}
+
+.arch-block::after {
+    content: attr(data-info);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+}
+
+.arch-block:hover::after {
+    opacity: 1;
+}
+
+/* Page load fade in */
+body {
+    animation: pageLoad 0.5s ease forwards;
+}
+
+@keyframes pageLoad {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

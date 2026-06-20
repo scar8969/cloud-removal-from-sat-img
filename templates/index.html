@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Removal from LISS-IV Satellite Imagery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="/static/css/slider.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">☁️ CloudRemoval</a>
+            <div class="nav-links">
+                <a href="#demo">Demo</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#training">Training</a>
+                <a href="#about">About</a>
+                <a href="https://github.com/scar8969/cloud-removal-from-sat-img" target="_blank" class="nav-github">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-clouds" id="heroClouds"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Cloud Removal from LISS-IV Satellite Imagery</h1>
+            <p class="hero-subtitle">Generative AI-powered cloud removal using U-Net Denoising Autoencoder</p>
+            <div class="hero-badges">
+                <span class="badge">PyTorch</span>
+                <span class="badge">U-Net</span>
+                <span class="badge">CPU-only</span>
+                <span class="badge">LISS-IV</span>
+                <span class="badge">Hackathon</span>
+            </div>
+            <div class="hero-features">
+                <div class="feature-card">
+                    <div class="feature-icon">🚫</div>
+                    <div class="feature-text">No Ground Truth Needed</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">CPU-Only Training</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <div class="feature-text">&lt; 1 Minute Setup</div>
+                </div>
+            </div>
+            <a href="#demo" class="cta-button pulse">Try Live Demo ↓</a>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section" id="problem">
+        <div class="container">
+            <h2 class="section-title">The Problem</h2>
+            <p class="section-desc">Clouds obscure up to 67% of satellite imagery annually, blocking critical analysis for agriculture, disaster response, and urban planning.</p>
+            <div class="problem-flow">
+                <div class="flow-step">
+                    <div class="flow-icon">🌥️</div>
+                    <div class="flow-label">Cloudy Image</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">❌</div>
+                    <div class="flow-label">Unclear Analysis</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">🤖</div>
+                    <div class="flow-label">AI Removal</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">✅</div>
+                    <div class="flow-label">Clean Image</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">📊</div>
+                    <div class="flow-label">Accurate Analysis</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section class="section" id="demo">
+        <div class="container">
+            <h2 class="section-title">Live Demo</h2>
+            <p class="section-desc">Upload a cloudy satellite image and watch the AI remove clouds in real-time.</p>
+
+            <div class="demo-container">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Drag & drop a cloudy image here</div>
+                    <div class="upload-subtext">or click to browse</div>
+                    <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.tif,.tiff" hidden>
+                    <div class="upload-formats">Supports: PNG, JPG, TIF</div>
+                </div>
+
+                <div class="demo-options">
+                    <button class="btn" id="btnExample">Or try an example image</button>
+                    <select id="exampleSelect" class="select-input">
+                        <option value="">Select an example...</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary btn-process" id="btnProcess" disabled>
+                    Process Image →
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Processing image...</div>
+                </div>
+
+                <div class="results-panel" id="resultsPanel" style="display:none;">
+                    <h3>Results</h3>
+                    <div class="comparison-container">
+                        <div class="comparison-slider" id="comparisonSlider">
+                            <div class="comparison-before">
+                                <img id="imgInput" alt="Cloudy input">
+                                <div class="comparison-label">Cloudy</div>
+                            </div>
+                            <div class="comparison-after">
+                                <img id="imgOutput" alt="Cleaned output">
+                                <div class="comparison-label">Cleaned</div>
+                            </div>
+                            <div class="comparison-handle" id="comparisonHandle">⟷</div>
+                        </div>
+                    </div>
+                    <div class="metrics-panel">
+                        <div class="metric">
+                            <div class="metric-label">PSNR</div>
+                            <div class="metric-value" id="metricPsnr">--</div>
+                            <div class="metric-bar"><div class="metric-fill" id="psnrBar"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">SSIM</div>
+                            <div class="metric-value" id="metricSsim">--</div>
+                            <div class="metric-bar"><div class="metric-fill" id="ssimBar"></div></div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Time</div>
+                            <div class="metric-value" id="metricTime">--</div>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn" id="btnDownload">Download Cleaned</button>
+                        <button class="btn" id="btnDownloadComp">Download Comparison</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-desc">Pre-baked examples showing cloud removal results.</p>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Batch Test Section -->
+    <section class="section" id="batch">
+        <div class="container">
+            <h2 class="section-title">Batch Test</h2>
+            <p class="section-desc">Upload multiple images for batch processing.</p>
+            <div class="upload-zone" id="batchZone">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Drop multiple images here</div>
+                <input type="file" id="batchInput" accept=".png,.jpg,.jpeg" multiple hidden>
+            </div>
+            <div class="batch-list" id="batchList"></div>
+            <button class="btn btn-primary" id="btnBatchProcess" style="display:none;">Process All</button>
+            <div class="batch-results" id="batchResults"></div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="section" id="architecture">
+        <div class="container">
+            <h2 class="section-title">Model Architecture</h2>
+            <p class="section-desc">U-Net with skip connections for spatial detail preservation.</p>
+            <div class="arch-diagram" id="archDiagram">
+                <!-- Encoder -->
+                <div class="arch-col encoder">
+                    <div class="arch-block" data-info="Input: 3×64×64 RGB image">
+                        <div class="block-title">Input</div>
+                        <div class="block-detail">3 channels</div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-block" data-info="Conv3×3→BN→ReLU→Conv3×3→BN→ReLU | 3→16 channels | 1,792 params">
+                        <div class="block-title">Enc1: DoubleConv</div>
+                        <div class="block-detail">3 → 16 ch</div>
+                    </div>
+                    <div class="arch-arrow">↓ Pool</div>
+                    <div class="arch-block" data-info="Conv3×3→BN→ReLU→Conv3×3→BN→ReLU | 16→32 channels | 7,296 params">
+                        <div class="block-title">Enc2: DoubleConv</div>
+                        <div class="block-detail">16 → 32 ch</div>
+                    </div>
+                </div>
+
+                <!-- Bottleneck -->
+                <div class="arch-col bottleneck">
+                    <div class="arch-arrow">↓ Pool</div>
+                    <div class="arch-block bottleneck-block" data-info="Conv3×3→BN→ReLU→Conv3×3→BN→ReLU | 32→64 channels | 28,864 params">
+                        <div class="block-title">Bottleneck</div>
+                        <div class="block-detail">32 → 64 ch</div>
+                    </div>
+                    <div class="arch-arrow">↑ UpConv</div>
+                </div>
+
+                <!-- Decoder -->
+                <div class="arch-col decoder">
+                    <div class="arch-block" data-info="ConvTranspose2d 2×2 | 64→32 channels | 8,192 params">
+                        <div class="block-title">UpConv2</div>
+                        <div class="block-detail">64 → 32 ch</div>
+                    </div>
+                    <div class="arch-skip">← Skip from Enc2</div>
+                    <div class="arch-block" data-info="Conv3×3→BN→ReLU→Conv3×3→BN→ReLU | 64→32 channels | 28,864 params">
+                        <div class="block-title">Dec2: DoubleConv</div>
+                        <div class="block-detail">64 → 32 ch</div>
+                    </div>
+                    <div class="arch-arrow">↑ UpConv</div>
+                    <div class="arch-block" data-info="ConvTranspose2d 2×2 | 32→16 channels | 2,064 params">
+                        <div class="block-title">UpConv1</div>
+                        <div class="block-detail">32 → 16 ch</div>
+                    </div>
+                    <div class="arch-skip">← Skip from Enc1</div>
+                    <div class="arch-block" data-info="Conv3×3→BN→ReLU→Conv3×3→BN→ReLU | 32→16 channels | 7,216 params">
+                        <div class="block-title">Dec1: DoubleConv</div>
+                        <div class="block-detail">32 → 16 ch</div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-block" data-info="Conv1×1 | 16→3 channels | 51 params">
+                        <div class="block-title">Output Conv</div>
+                        <div class="block-detail">16 → 3 ch</div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-block" data-info="Sigmoid activation | Output: 3×64×64 cleaned RGB image">
+                        <div class="block-title">Sigmoid</div>
+                        <div class="block-detail">0-1 range</div>
+                    </div>
+                </div>
+            </div>
+            <div class="arch-stats">
+                <div class="stat">
+                    <div class="stat-value">117,715</div>
+                    <div class="stat-label">Total Parameters</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">494 KB</div>
+                    <div class="stat-label">Model Size</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">~45ms</div>
+                    <div class="stat-label">Inference Time (CPU)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Metrics Section -->
+    <section class="section" id="training">
+        <div class="container">
+            <h2 class="section-title">Training Metrics</h2>
+            <p class="section-desc">Model performance over 5 epochs of training.</p>
+            <div class="charts-container">
+                <canvas id="lossChart"></canvas>
+                <canvas id="psnrChart"></canvas>
+                <canvas id="ssimChart"></canvas>
+            </div>
+            <div class="training-config">
+                <h3>Configuration</h3>
+                <div class="config-grid">
+                    <div class="config-item"><span class="config-key">Dataset</span><span class="config-val">55 images → 500 pairs</span></div>
+                    <div class="config-item"><span class="config-key">Patch Size</span><span class="config-val">64×64</span></div>
+                    <div class="config-item"><span class="config-key">Batch Size</span><span class="config-val">32</span></div>
+                    <div class="config-item"><span class="config-key">Epochs</span><span class="config-val">5</span></div>
+                    <div class="config-item"><span class="config-key">Optimizer</span><span class="config-val">Adam (lr=0.001)</span></div>
+                    <div class="config-item"><span class="config-key">Best PSNR</span><span class="config-val">28.26 dB</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About This Project</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Problem</h3>
+                    <p>Clouds frequently obscure satellite imagery, preventing accurate analysis for agriculture monitoring, disaster response, and urban planning.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Solution</h3>
+                    <p>A U-Net denoising autoencoder trained on synthetic cloudy images. No ground truth needed — unlimited training data via synthetic cloud generation.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Innovation</h3>
+                    <ul>
+                        <li>Synthetic cloud generation (Gaussian blobs)</li>
+                        <li>Lightweight U-Net (118K params)</li>
+                        <li>CPU-only training (~1 minute)</li>
+                        <li>Fast inference (&lt; 50ms)</li>
+                    </ul>
+                </div>
+                <div class="about-card">
+                    <h3>Tech Stack</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">NumPy</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">HTML/CSS/JS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-links">
+                <a href="https://github.com/scar8969/cloud-removal-from-sat-img" target="_blank" class="btn btn-primary">View on GitHub</a>
+                <a href="/report.html" target="_blank" class="btn">View Report</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Cloud Removal from LISS-IV Satellite Imagery | Hackathon Project 2026</p>
+            <p><a href="https://github.com/scar8969/cloud-removal-from-sat-img">github.com/scar8969/cloud-removal-from-sat-img</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/slider.js"></script>
+    <script src="/static/js/gallery.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/export.js"></script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>
