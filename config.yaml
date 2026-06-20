@@ -1,0 +1,19 @@
+train:
+  dataset_root: "inputs/clear_images"
+  synthetic_pairs: 500
+  patch_size: 64
+  batch_size: 32
+  epochs: 5
+  lr: 0.001
+  model_path: "outputs/models/model.pt"
+
+cloud:
+  n_blobs: [2, 6]
+  sigma_range: [15, 40]
+  cloudiness_range: [0.2, 0.6]
+
+infer:
+  input_path: "inputs/cloudy_images/cloudy_sample.png"
+  output_path: "outputs/liss4/cleaned.png"
+
+outputs: "outputs"

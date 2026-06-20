@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+outputs/
+inputs/clear_images/clear_0*.png
+*.egg-info/
+.env
